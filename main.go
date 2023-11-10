@@ -50,7 +50,6 @@ func main() {
 			} else {
 				switch update.Message.Command() {
 				case "driver":
-					userId := update.Message.Chat.ID
 					driver := db.GetDriverByUserId(userId)
 					if driver == nil {
 						msg := tgbotapi.NewMessage(userId, "You are now a driver! Stay online to receive bookings!")
@@ -60,6 +59,14 @@ func main() {
 						msg := tgbotapi.NewMessage(userId, "You are no longer a driver!")
 						bot.Send(msg)
 						db.RemoveDriver(userId)
+					}
+				case "new":
+					switch userState {
+					case states.INIT:
+						handlers.HandleNewBooking(update, bot)
+					default:
+						msg := tgbotapi.NewMessage(userId, "You have an existing booking in progress. Please complete that first.")
+						bot.Send(msg)
 					}
 				}
 			}

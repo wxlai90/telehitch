@@ -40,7 +40,7 @@ func HandlePassengerCount(update tgbotapi.Update, bot *tgbotapi.BotAPI) {
 
 	db.UpdateStateForUserId(userId, states.PICKUP)
 
-	reply := tgbotapi.NewMessage(update.Message.Chat.ID, "Pickup from?")
+	reply := tgbotapi.NewMessage(update.Message.Chat.ID, "Pickup from? (Please send a location message)")
 	bot.Send(reply)
 }
 
@@ -56,7 +56,7 @@ func HandlePickupLocation(update tgbotapi.Update, bot *tgbotapi.BotAPI) {
 		}
 		db.UpdateStateForUserId(userId, states.DROPOFF)
 
-		reply := tgbotapi.NewMessage(update.Message.Chat.ID, "Drop-off at?")
+		reply := tgbotapi.NewMessage(update.Message.Chat.ID, "Drop-off at? (Please send a location message)")
 		bot.Send(reply)
 		return
 	}
@@ -74,7 +74,7 @@ func HandlePickupLocation(update tgbotapi.Update, bot *tgbotapi.BotAPI) {
 	}
 	db.UpdateStateForUserId(userId, states.DROPOFF)
 
-	reply := tgbotapi.NewMessage(update.Message.Chat.ID, "Drop-off at?")
+	reply := tgbotapi.NewMessage(update.Message.Chat.ID, "Drop-off at? (Please send a location message)")
 	bot.Send(reply)
 }
 
