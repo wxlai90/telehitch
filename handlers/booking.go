@@ -15,8 +15,6 @@ import (
 	"github.com/wxlai90/telehitch/utils"
 )
 
-const BOOKING_TIMEOUT = time.Second * 1
-
 func HandleNewBooking(update tgbotapi.Update, bot *tgbotapi.BotAPI) {
 	userId := update.Message.Chat.ID
 	db.AddNewBooking(userId, utils.FormatUserName(update.Message.From))
@@ -139,7 +137,7 @@ func HandleFareAmount(update tgbotapi.Update, bot *tgbotapi.BotAPI) {
 		case <-c:
 			log.Println("Booking accepted")
 			return
-		case <-time.After(BOOKING_TIMEOUT):
+		case <-time.After(config.BOOKING_TIMEOUT):
 			paxReply := tgbotapi.NewMessage(update.Message.Chat.ID, "No drivers accepted the booking, feel free to make a new booking or re-use the last booking by selecting 'Create Last Booking'")
 			kb := tgbotapi.NewInlineKeyboardMarkup(
 				tgbotapi.NewInlineKeyboardRow(
@@ -323,7 +321,7 @@ func HandlePaxRecreateLastBooking(update tgbotapi.Update, bot *tgbotapi.BotAPI) 
 		case <-c:
 			log.Println("Booking accepted")
 			return
-		case <-time.After(BOOKING_TIMEOUT):
+		case <-time.After(config.BOOKING_TIMEOUT):
 			paxReply := tgbotapi.NewMessage(p.UserId, "No drivers accepted the booking, feel free to make a new booking or re-use the last booking by selecting 'Create Last Booking'")
 			kb := tgbotapi.NewInlineKeyboardMarkup(
 				tgbotapi.NewInlineKeyboardRow(
