@@ -5,6 +5,7 @@ import (
 	"os"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/wxlai90/telehitch/config"
 	"github.com/wxlai90/telehitch/db"
 	"github.com/wxlai90/telehitch/handlers"
 	"github.com/wxlai90/telehitch/states"
@@ -18,6 +19,8 @@ func main() {
 	}
 
 	log.Printf("Authorized on account %s", bot.Self.UserName)
+
+	bot.Debug = config.IsDebugMode
 
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
