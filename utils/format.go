@@ -19,7 +19,7 @@ func FormatBookingText(booking *models.Booking, header string) string {
 
 func FormatUserName(from *tgbotapi.User) string {
 	if from.UserName != "" {
-		return from.UserName
+		return "@" + from.UserName
 	}
 
 	if from.FirstName != "" && from.LastName != "" {

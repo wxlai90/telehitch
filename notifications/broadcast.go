@@ -14,7 +14,7 @@ func BroadcastToDrivers(booking *models.Booking, bot *tgbotapi.BotAPI) {
 	drivers := db.GetAllDrivers()
 
 	for _, driver := range drivers {
-		text := utils.FormatBookingText(booking, "New Booking - Accept?")
+		text := utils.FormatBookingText(booking, fmt.Sprintf("New Booking from %s - Accept?", booking.Passenger.Name))
 		msg := tgbotapi.NewMessage(driver.UserId, text)
 		msg.ParseMode = "Markdown"
 
