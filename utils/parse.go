@@ -3,11 +3,13 @@ package utils
 import (
 	"strconv"
 	"strings"
+
+	"github.com/wxlai90/telehitch/states"
 )
 
 type ParsedCallbackData struct {
 	UserId    int64
-	Selection string
+	Selection states.State
 }
 
 func ParseCallbackData(data string) (ParsedCallbackData, error) {
@@ -20,7 +22,11 @@ func ParseCallbackData(data string) (ParsedCallbackData, error) {
 	}
 
 	p.UserId = int64(userId)
-	p.Selection = fields[0]
+	state, err := strconv.Atoi(fields[0])
+	if err != nil {
+		return p, err
+	}
 
+	p.Selection = states.State(state)
 	return p, nil
 }

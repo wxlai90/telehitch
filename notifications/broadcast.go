@@ -20,7 +20,7 @@ func BroadcastToDrivers(booking *models.Booking, bot *tgbotapi.BotAPI) {
 
 		kb := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData("Yes", fmt.Sprintf("%s|%d", states.ACCEPT_BOOKING, booking.Passenger.UserId)),
+				tgbotapi.NewInlineKeyboardButtonData("Yes", fmt.Sprintf("%d|%d", states.ACCEPT_BOOKING, booking.Passenger.UserId)),
 			),
 		)
 
@@ -36,8 +36,8 @@ func ReplyToPassenger(userId int64, booking *models.Booking, bot *tgbotapi.BotAP
 	msg := tgbotapi.NewMessage(userId, text)
 	kb := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("Cancel Booking", fmt.Sprintf("%s|%d", states.PAX_CANCEL_BOOKING, booking.Passenger.UserId)),
-			tgbotapi.NewInlineKeyboardButtonData("Completed", fmt.Sprintf("%s|%d", states.PAX_COMPLETED, booking.Passenger.UserId)),
+			tgbotapi.NewInlineKeyboardButtonData("Cancel Booking", fmt.Sprintf("%d|%d", states.PAX_CANCEL_BOOKING, booking.Passenger.UserId)),
+			tgbotapi.NewInlineKeyboardButtonData("Completed", fmt.Sprintf("%d|%d", states.PAX_COMPLETED, booking.Passenger.UserId)),
 		),
 	)
 

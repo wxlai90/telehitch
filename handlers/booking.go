@@ -141,7 +141,7 @@ func HandleFareAmount(update tgbotapi.Update, bot *tgbotapi.BotAPI) {
 			paxReply := tgbotapi.NewMessage(update.Message.Chat.ID, "No drivers accepted the booking, feel free to make a new booking or re-use the last booking by selecting 'Create Last Booking'")
 			kb := tgbotapi.NewInlineKeyboardMarkup(
 				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData("Create Last Booking", fmt.Sprintf("%s|%d", states.RE_CREATE, update.Message.Chat.ID)),
+					tgbotapi.NewInlineKeyboardButtonData("Create Last Booking", fmt.Sprintf("%d|%d", states.RE_CREATE, update.Message.Chat.ID)),
 				),
 			)
 			paxReply.ReplyMarkup = kb
@@ -182,8 +182,8 @@ func HandleDriverAcceptance(update tgbotapi.Update, bot *tgbotapi.BotAPI) {
 	msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "Please proceed to pickup location now\nYou can chat with the passenger by sending messages here")
 	kb := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("Cancel Pickup", fmt.Sprintf("%s|%d", states.CANCEL_PICKUP, update.CallbackQuery.From.ID)),
-			tgbotapi.NewInlineKeyboardButtonData("Send Arrival Text", fmt.Sprintf("%s|%d", states.SEND_ARRIVAL, update.CallbackQuery.From.ID)),
+			tgbotapi.NewInlineKeyboardButtonData("Cancel Pickup", fmt.Sprintf("%d|%d", states.CANCEL_PICKUP, update.CallbackQuery.From.ID)),
+			tgbotapi.NewInlineKeyboardButtonData("Send Arrival Text", fmt.Sprintf("%d|%d", states.SEND_ARRIVAL, update.CallbackQuery.From.ID)),
 		),
 	)
 	msg.ReplyMarkup = kb
@@ -278,7 +278,7 @@ func HandlePaxCancellation(update tgbotapi.Update, bot *tgbotapi.BotAPI) {
 	paxReply := tgbotapi.NewMessage(booking.Passenger.UserId, "You have cancelled the booking, feel free to make a new booking or re-use the last booking by selecting 'Create Last Booking'")
 	kb := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("Create Last Booking", fmt.Sprintf("%s|%d", states.RE_CREATE, update.CallbackQuery.From.ID)),
+			tgbotapi.NewInlineKeyboardButtonData("Create Last Booking", fmt.Sprintf("%d|%d", states.RE_CREATE, update.CallbackQuery.From.ID)),
 		),
 	)
 	paxReply.ReplyMarkup = kb
@@ -325,7 +325,7 @@ func HandlePaxRecreateLastBooking(update tgbotapi.Update, bot *tgbotapi.BotAPI) 
 			paxReply := tgbotapi.NewMessage(p.UserId, "No drivers accepted the booking, feel free to make a new booking or re-use the last booking by selecting 'Create Last Booking'")
 			kb := tgbotapi.NewInlineKeyboardMarkup(
 				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData("Create Last Booking", fmt.Sprintf("%s|%d", states.RE_CREATE, p.UserId)),
+					tgbotapi.NewInlineKeyboardButtonData("Create Last Booking", fmt.Sprintf("%d|%d", states.RE_CREATE, p.UserId)),
 				),
 			)
 			paxReply.ReplyMarkup = kb

@@ -12,11 +12,11 @@ const (
 	PENDING_PICKUP
 	DRIVER_STATE
 
-	// shorten it to fit telegram callback data limit
-	ACCEPT_BOOKING     = "A"
-	CANCEL_PICKUP      = "B"
-	SEND_ARRIVAL       = "C"
-	PAX_CANCEL_BOOKING = "D"
-	RE_CREATE          = "E"
-	PAX_COMPLETED      = "F"
+	// callback states
+	ACCEPT_BOOKING
+	CANCEL_PICKUP
+	SEND_ARRIVAL
+	PAX_CANCEL_BOOKING
+	RE_CREATE
+	PAX_COMPLETED
 )
