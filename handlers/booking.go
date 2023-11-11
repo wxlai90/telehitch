@@ -29,7 +29,7 @@ func HandlePassengerCount(update tgbotapi.Update, bot *tgbotapi.BotAPI) {
 	msg := update.Message.Text
 
 	noOfPax, err := strconv.Atoi(msg)
-	if err != nil {
+	if err != nil || noOfPax < 1 || noOfPax > 100 {
 		reply := tgbotapi.NewMessage(update.Message.Chat.ID, "Number of passengers is invalid")
 		bot.Send(reply)
 		return
