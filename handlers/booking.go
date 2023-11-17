@@ -132,23 +132,7 @@ func HandleFareAmount(update tgbotapi.Update, bot *tgbotapi.BotAPI) {
 	c := make(chan bool)
 	booking.Channel = c
 
-	go func() {
-		select {
-		case <-c:
-			log.Println("Booking accepted")
-			return
-		case <-time.After(config.BOOKING_TIMEOUT):
-			paxReply := tgbotapi.NewMessage(update.Message.Chat.ID, "No drivers accepted the booking, feel free to make a new booking or re-use the last booking by selecting 'Create Last Booking'")
-			kb := tgbotapi.NewInlineKeyboardMarkup(
-				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData("Create Last Booking", fmt.Sprintf("%d|%d", states.RE_CREATE, update.Message.Chat.ID)),
-				),
-			)
-			paxReply.ReplyMarkup = kb
-			bot.Send(paxReply)
-			db.ArchiveBookingForUserId(update.Message.Chat.ID)
-		}
-	}()
+	go startListening(c, update.Message.Chat.ID, bot)
 }
 
 func HandleRelay(update tgbotapi.Update, bot *tgbotapi.BotAPI) {
@@ -316,23 +300,7 @@ func HandlePaxRecreateLastBooking(update tgbotapi.Update, bot *tgbotapi.BotAPI) 
 	c := make(chan bool)
 	booking.Channel = c
 
-	go func() {
-		select {
-		case <-c:
-			log.Println("Booking accepted")
-			return
-		case <-time.After(config.BOOKING_TIMEOUT):
-			paxReply := tgbotapi.NewMessage(p.UserId, "No drivers accepted the booking, feel free to make a new booking or re-use the last booking by selecting 'Create Last Booking'")
-			kb := tgbotapi.NewInlineKeyboardMarkup(
-				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData("Create Last Booking", fmt.Sprintf("%d|%d", states.RE_CREATE, p.UserId)),
-				),
-			)
-			paxReply.ReplyMarkup = kb
-			bot.Send(paxReply)
-			db.ArchiveBookingForUserId(p.UserId)
-		}
-	}()
+	go startListening(c, p.UserId, bot)
 }
 
 func HandlePaxTripCompleted(update tgbotapi.Update, bot *tgbotapi.BotAPI) {
@@ -357,4 +325,22 @@ func HandlePaxTripCompleted(update tgbotapi.Update, bot *tgbotapi.BotAPI) {
 
 	db.ArchiveBookingForUserId(p.UserId)
 	db.UpdateStateForUserId(p.UserId, states.INIT)
+}
+
+func startListening(c chan bool, userId int64, bot *tgbotapi.BotAPI) {
+	select {
+	case <-c:
+		log.Println("Booking accepted")
+		return
+	case <-time.After(config.BOOKING_TIMEOUT):
+		paxReply := tgbotapi.NewMessage(userId, "No drivers accepted the booking, feel free to make a new booking or re-use the last booking by selecting 'Create Last Booking'")
+		kb := tgbotapi.NewInlineKeyboardMarkup(
+			tgbotapi.NewInlineKeyboardRow(
+				tgbotapi.NewInlineKeyboardButtonData("Create Last Booking", fmt.Sprintf("%d|%d", states.RE_CREATE, userId)),
+			),
+		)
+		paxReply.ReplyMarkup = kb
+		bot.Send(paxReply)
+		db.ArchiveBookingForUserId(userId)
+	}
 }
